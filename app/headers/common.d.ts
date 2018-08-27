@@ -1,7 +1,5 @@
 /// <reference path="./es6-shim/es6-shim.d.ts" />
 
-declare var System: any;
-
 // dummy modules
 declare module 'app/core/config' {
   var config: any;
@@ -39,8 +37,46 @@ declare module 'q' {
 }
 
 declare module 'app/core/time_series2' {
-  var time_series2: any;
-  export default time_series2;
+  export var time_series2: any;
+  export default class TimeSeries {
+    constructor(opts);
+    datapoints: any;
+    id: string;
+    label: string;
+    alias: string;
+    aliasEscaped: string;
+    color: string;
+    valueFormater: any;
+    stats: any;
+    legend: boolean;
+    allIsNull: boolean;
+    allIsZero: boolean;
+    decimals: number;
+    scaledDecimals: number;
+    hasMsResolution: boolean;
+    isOutsideRange: boolean;
+    lines: any;
+    dashes: any;
+    bars: any;
+    points: any;
+    yaxis: any;
+    zindex: any;
+    stack: any;
+    nullPointMode: any;
+    fillBelowTo: any;
+    transform: any;
+    flotpairs: any;
+    unit: any;
+    applySeriesOverrides(overrides): void;
+    getFlotPairs(fillStyle): any[];
+    updateLegendValues(formater, decimals, scaledDecimals): void;
+    formatValue(value): any;
+    isMsResolutionNeeded(): boolean;
+    hideFromLegend(options): boolean;
+    setColor(color): void;
+  }
+  export function updateLegendValues(data, panel, height): void;
+  export function getDataMinMax(data): any;
 }
 
 declare module 'app/core/table_model' {
@@ -114,9 +150,18 @@ declare module 'app/core/utils/datemath' {
   export function parseDateMath(mathString: any, time: any, roundUp?: any): any;
 }
 
+declare module 'app/core/core' {
+  export class TimeSeries {
+    constructor();
+  }
+  export var appEvents;
+  export var coreModule: any;
+  export function updateLegendValues(data, panel, graphHeight): any;
+}
+
 declare module 'app/plugins/sdk' {
-  export class PanelCtrl{
-    constructor($scope:any, $injector: any);
+  export class PanelCtrl {
+    constructor($scope: any, $injector: any);
     panel: any;
     error: any;
     row: any;
@@ -164,43 +209,43 @@ declare module 'app/plugins/sdk' {
     getInfoContent(options: any): void;
     openInspector(): void;
   }
-  export class MetricsPanelCtrl extends PanelCtrl{
-      constructor($scope:any, $injector: any);
-      scope: any;
-      loading: boolean;
-      datasource: any;
-      datasourceName: any;
-      $q: any;
-      $timeout: any;
-      datasourceSrv: any;
-      timeSrv: any;
-      templateSrv: any;
-      timing: any;
-      range: any;
-      interval: any;
-      intervalMs: any;
-      resolution: any;
-      timeInfo: any;
-      skipDataOnInit: boolean;
-      dataStream: any;
-      dataSubscription: any;
-      dataList: any;
-      nextRefId: string;
-      setTimeQueryStart() :void
-      setTimeQueryEnd() :void
-      updateTimeRange(datasource?) :void
-      calculateInterval() :void
-      applyPanelTimeOverrides() :void
-      issueQueries(datasource) :void
-      handleQueryResult(result) :void
-      handleDataStream(stream) :void
-      setDatasource(datasource) :void
-      addQuery(target) :void
-      removeQuery(target) :void
-      moveQuery(target, direction) :void;
+  export class MetricsPanelCtrl extends PanelCtrl {
+    constructor($scope: any, $injector: any);
+    scope: any;
+    loading: boolean;
+    datasource: any;
+    datasourceName: any;
+    $q: any;
+    $timeout: any;
+    datasourceSrv: any;
+    timeSrv: any;
+    templateSrv: any;
+    timing: any;
+    range: any;
+    interval: any;
+    intervalMs: any;
+    resolution: any;
+    timeInfo: any;
+    skipDataOnInit: boolean;
+    dataStream: any;
+    dataSubscription: any;
+    dataList: any;
+    nextRefId: string;
+    setTimeQueryStart(): void
+    setTimeQueryEnd(): void
+    updateTimeRange(datasource?): void
+    calculateInterval(): void
+    applyPanelTimeOverrides(): void
+    issueQueries(datasource): void
+    handleQueryResult(result): void
+    handleDataStream(stream): void
+    setDatasource(datasource): void
+    addQuery(target): void
+    removeQuery(target): void
+    moveQuery(target, direction): void;
   }
-  export class QueryCtrl{
-    constructor($scope:any, $injector: any);
+  export class QueryCtrl {
+    constructor($scope: any, $injector: any);
     target: any;
     panelCtrl: any;
     panel: any;
@@ -210,6 +255,94 @@ declare module 'app/plugins/sdk' {
 
     refresh(): void;
   }
-
+  export class AlertTabCtrl {
+    constructor($scope: any, backendSrv: any, dashboardSrv: any, uiSegmentSrv: any, $q: any, datasourceSrv: any);
+    panel: any;
+    panelCtrl: any;
+    testing: boolean;
+    testResult: any;
+    subTabIndex: number;
+    conditionTypes: any;
+    alert: any;
+    conditionModels: any;
+    evalFunctions: any;
+    evalOperators: any;
+    noDataModes: any;
+    executionErrorModes: any;
+    addNotificationSegment;
+    notifications;
+    alertNotifications;
+    error: string;
+    appSubUrl: string;
+    alertHistory: any;
+    $onInit(): any;
+    getAlertHistory(): void;
+    getNotificationIcon(type): string;
+    getNotifications(): any;
+    changeTabIndex(newTabIndex): void;
+    notificationAdded(): void;
+    removeNotification(index): void;
+    initModel(): void;
+    graphThresholdChanged(evt): void;
+    buildDefaultCondition(): any;
+    validateModel(): any;
+    buildConditionModel(source): any;
+    handleQueryPartEvent(conditionModel, evt): any;
+    handleReducerPartEvent(conditionModel, evt): any;
+    addCondition(type): void;
+    removeCondition(index): void;
+    delete(): void;
+    enable(): void;
+    evaluatorParamsChanged(): void;
+    evaluatorTypeChanged(evaluator): void;
+    clearHistory(): void;
+    test(): void;
+  }
+  export function alertTab(): any;
   export function loadPluginCss(options: any): void;
+}
+
+declare module 'app/core/utils/colors' {
+  var colors: string[];
+  export default colors;
+  export const PALETTE_ROWS: number;
+  export const PALETTE_COLUMNS: number;
+  export const DEFAULT_ANNOTATION_COLOR: string;
+  export const OK_COLOR: string;
+  export const ALERTING_COLOR: string;
+  export const NO_DATA_COLOR: string;
+  export const REGION_FILL_ALPHA: number;
+}
+
+declare module 'app/core/utils/ticks' {
+  export function tickStep(start, stop, count): number;
+}
+
+declare module 'app/features/annotations/all' {
+  export class EventManager {
+    constructor(ctrl);
+    addFlotEvents(annotations, options): any;
+    updateTime(time): any;
+  }
+}
+
+declare module 'app/core/components/query_part/query_part' {
+  export class QueryPartDef {
+    constructor(init);
+  }
+  export class QueryPart {
+    constructor(param, param2);
+  }
+}
+
+declare module 'baron/baron' {
+  export default function baron(param): void;
+}
+
+declare module 'Users/zhouweiting/go/src/github.com/grafana/grafana/data/plugins/trend-graph/baron/baron' {
+  export default function baron(param): void;
+}
+
+declare module 'tinycolor2' {
+  export default function tinycolor(string): any;
 }
