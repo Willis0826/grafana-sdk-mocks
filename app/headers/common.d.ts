@@ -316,6 +316,7 @@ declare module 'app/core/utils/colors' {
 
 declare module 'app/core/utils/ticks' {
   export function tickStep(start, stop, count): number;
+  export function getFlotTickDecimals(datamin, datamax, axis, height): any;
 }
 
 declare module 'app/features/annotations/all' {
